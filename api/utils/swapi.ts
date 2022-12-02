@@ -10,11 +10,14 @@ export type SwapiRequest = {
 export default {
   async fetchUrl(request: SwapiRequest) {
     return axios
-      .get(`${config.SWAPI_BASE_URL}/${request.dataType}${request.query}`, {
-        headers: {
-          'Accept-Encoding': 'application/json',
-        },
-      })
+      .get(
+        `${config.SWAPI_BASE_URL}/${request.dataType}${request.query}`,
+        {
+          headers: {
+            'Accept-Encoding': 'application/json',
+          },
+        }
+      )
       .then((response) => {
         return {
           [request.dataType]: response.data.result || [],
