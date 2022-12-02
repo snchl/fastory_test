@@ -2,10 +2,11 @@
   "name": "fastory-test",
   "main": "lib/index.js",
   "scripts": {
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q lib/index.js\""
+    "dev:api": "concurrently \"npx tsc --watch\" \"nodemon -q ./lib/index.js\""
   },
   "dependencies": {
-    "@hapi/hapi": "^21.1.0"
+    "@hapi/hapi": "^21.1.0",
+    "axios": "^1.2.0"
   },
   "devDependencies": {
     "@types/hapi": "^18.0.7",
