@@ -1,11 +1,11 @@
 import Hapi from '@hapi/hapi';
-import Search from '../repositories/Search';
+import Swapi from '../repositories/Swapi';
 
 const routes = [
   {
     path: '/search/{type?}',
     method: ['GET'],
-    handler: Search.search
+    handler: Swapi.search
   },
 ] as Hapi.ServerRoute<Hapi.ReqRefDefaults>[];
 

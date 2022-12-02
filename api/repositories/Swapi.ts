@@ -24,6 +24,8 @@ export default {
         ? request.params.type
         : undefined;
 
+    const id: number | undefined = type ? request.query.id : undefined;
+
     const swapiRequests: SwapiRequest | SwapiRequest[] = type
       ? {
           dataType: type,
@@ -35,6 +37,7 @@ export default {
               : type === 'films'
               ? `?title=${request.query.search}`
               : '',
+          id,
         }
       : [
           {
@@ -68,18 +71,27 @@ export default {
           swapiRequests.map((swapiRequest: SwapiRequest) =>
             swapi.fetchUrl(swapiRequest)
           )
-        ).then((data) => {
-          const mappedResponse: any = {};
+        )
+          .then((data) => {
+            const mappedResponse: any = {};
 
-          data.forEach((value) => {
-            Object.entries(value).forEach((entry) => {
-              mappedResponse[entry[0]] = entry[1];
+            data.forEach((value) => {
+              Object.entries(value).forEach((entry) => {
+                mappedResponse[entry[0]] = entry[1];
+              });
             });
-          });
 
-          return mappedResponse;
-        })
-      : swapi.fetchUrl(swapiRequests);
+            return mappedResponse;
+          })
+          .catch((error) => {
+            // TODO
+          })
+      : await swapi
+          .fetchUrl(swapiRequests)
+          .then((data) => (data[type] ? data[type] : data))
+          .catch((error) => {
+            // TODO
+          });
 
     return response;
   },

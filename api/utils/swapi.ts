@@ -5,13 +5,16 @@ import config from '../config';
 export type SwapiRequest = {
   dataType: DataType;
   query: string;
+  id?: number;
 };
 
 export default {
   async fetchUrl(request: SwapiRequest) {
     return axios
       .get(
-        `${config.SWAPI_BASE_URL}/${request.dataType}${request.query}`,
+        `${config.SWAPI_BASE_URL}/${request.dataType}/${
+          request.id ? request.id : ''
+        }${request.id ? '' : request.query}`,
         {
           headers: {
             'Accept-Encoding': 'application/json',
