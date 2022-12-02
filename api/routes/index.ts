@@ -3,7 +3,7 @@ import Search from '../repositories/Search';
 
 const routes = [
   {
-    path: '/search',
+    path: '/search/{type?}',
     method: ['GET'],
     handler: Search.search
   },

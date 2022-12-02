@@ -1,4 +1,5 @@
 import Hapi from '@hapi/hapi';
+import DataType from '../types/DataType';
 import swapi, { SwapiRequest } from '../utils/swapi';
 
 export default {
@@ -10,49 +11,76 @@ export default {
         .message('Bad request');
     }
 
-    const swapiRequests: SwapiRequest[] = [
-      {
-        dataType: 'people',
-        query: `?name=${request.query.search}`,
-      },
-      {
-        dataType: 'films',
-        query: `?title=${request.query.search}`,
-      },
-      {
-        dataType: 'starships',
-        query: `?name=${request.query.search}&model=${request.query.search}`,
-      },
-      {
-        dataType: 'vehicles',
-        query: `?name=${request.query.search}&model=${request.query.search}`,
-      },
-      {
-        dataType: 'species',
-        query: `?name=${request.query.search}`,
-      },
-      {
-        dataType: 'planets',
-        query: `?name=${request.query.search}`,
-      },
-    ];
+    const type: DataType =
+      request.params.type &&
+      [
+        'people',
+        'films',
+        'starships',
+        'vehicles',
+        'species',
+        'planets',
+      ].includes(request.params.type)
+        ? request.params.type
+        : undefined;
 
-    const responses = await Promise.all(
-      swapiRequests.map((swapiRequest: SwapiRequest) =>
-        swapi.fetchUrl(swapiRequest)
-      )
-    ).then((data) => {
-      const mappedResponse: any = {};
+    const swapiRequests: SwapiRequest | SwapiRequest[] = type
+      ? {
+          dataType: type,
+          query:
+            type === 'people' || type === 'species' || type === 'planets'
+              ? `?name=${request.query.search}`
+              : type === 'starships' || type === 'vehicles'
+              ? `?name=${request.query.search}&model=${request.query.search}`
+              : type === 'films'
+              ? `?title=${request.query.search}`
+              : '',
+        }
+      : [
+          {
+            dataType: 'people',
+            query: `?name=${request.query.search}`,
+          },
+          {
+            dataType: 'films',
+            query: `?title=${request.query.search}`,
+          },
+          {
+            dataType: 'starships',
+            query: `?name=${request.query.search}&model=${request.query.search}`,
+          },
+          {
+            dataType: 'vehicles',
+            query: `?name=${request.query.search}&model=${request.query.search}`,
+          },
+          {
+            dataType: 'species',
+            query: `?name=${request.query.search}`,
+          },
+          {
+            dataType: 'planets',
+            query: `?name=${request.query.search}`,
+          },
+        ];
 
-      data.forEach((value) => {
-        Object.entries(value).forEach((entry) => {
-          mappedResponse[entry[0]] = entry[1];
-        });
-      });
+    const response = Array.isArray(swapiRequests)
+      ? await Promise.all(
+          swapiRequests.map((swapiRequest: SwapiRequest) =>
+            swapi.fetchUrl(swapiRequest)
+          )
+        ).then((data) => {
+          const mappedResponse: any = {};
 
-      return mappedResponse;
-    });
+          data.forEach((value) => {
+            Object.entries(value).forEach((entry) => {
+              mappedResponse[entry[0]] = entry[1];
+            });
+          });
 
-    return responses;
+          return mappedResponse;
+        })
+      : swapi.fetchUrl(swapiRequests);
+
+    return response;
   },
 };
