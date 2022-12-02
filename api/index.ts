@@ -2,6 +2,7 @@
 
 import Hapi from '@hapi/hapi';
 import { Server } from '@hapi/hapi';
+import routes from './routes';
 
 export const init = async (): Promise<void> => {
   const server: Server = Hapi.server({
@@ -9,13 +10,7 @@ export const init = async (): Promise<void> => {
     host: '0.0.0.0',
   });
 
-  server.route({
-    path: '/',
-    method: ['GET'],
-    handler: (request, response) => {
-      return 'Hello world';
-    },
-  });
+  server.route(routes);
 
   await server.start();
 };
