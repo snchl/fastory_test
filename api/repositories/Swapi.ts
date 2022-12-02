@@ -4,13 +4,6 @@ import swapi, { SwapiRequest } from '../utils/swapi';
 
 export default {
   async search(request: Hapi.Request, h: Hapi.ResponseToolkit) {
-    if (!request.query.search) {
-      return h
-        .response('Missing search query params')
-        .code(400)
-        .message('Bad request');
-    }
-
     const type: DataType =
       request.params.type &&
       [
@@ -29,14 +22,15 @@ export default {
     const swapiRequests: SwapiRequest | SwapiRequest[] = type
       ? {
           dataType: type,
-          query:
-            type === 'people' || type === 'species' || type === 'planets'
+          query: request.params.query
+            ? type === 'people' || type === 'species' || type === 'planets'
               ? `?name=${request.query.search}`
               : type === 'starships' || type === 'vehicles'
               ? `?name=${request.query.search}&model=${request.query.search}`
               : type === 'films'
               ? `?title=${request.query.search}`
-              : '',
+              : ''
+            : '',
           id,
         }
       : [

@@ -4,7 +4,7 @@ import config from '../config';
 
 export type SwapiRequest = {
   dataType: DataType;
-  query: string;
+  query?: string;
   id?: number;
 };
 
@@ -23,7 +23,8 @@ export default {
       )
       .then((response) => {
         return {
-          [request.dataType]: response.data.result || [],
+          [request.dataType]:
+            response.data.results || response.data.result || [],
         };
       })
       .catch((error) => {
