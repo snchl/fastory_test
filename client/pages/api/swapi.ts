@@ -15,7 +15,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     },
     headers: {
       'Accept-Encoding': 'application/json',
-    }
+    },
   })
     .then((response) => {
       return res.json(response.data);
