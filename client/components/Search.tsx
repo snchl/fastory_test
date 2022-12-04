@@ -21,15 +21,24 @@ const Search: NextComponentType = () => {
   const searchLoad = useSelector(selectSearchLoadState);
   const dispatch = useDispatch();
 
-  const handleSearchChange = (target: HTMLInputElement) => {
-    setSearchQuery(target.value);
+  const debounce = (fn: Function, time: number) => {
+    let searchTimeout: NodeJS.Timeout | null;
+    const wrapper = (query: string) => {
+      if (searchTimeout) clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        searchTimeout = null;
+        fn(query);
+      }, time);
+    };
+    return wrapper;
   };
-  const search = async () => {
-    if (!searchLoad && searchQuery) {
+
+  const search = debounce(async (query: string) => {
+    if (!searchLoad && query) {
       dispatch(setSearchLoadState(true));
       await axios('/api/swapi', {
         params: {
-          search: searchQuery,
+          search: query,
         },
       })
         .then((response) => {
@@ -45,6 +54,10 @@ const Search: NextComponentType = () => {
         });
       dispatch(setSearchLoadState(false));
     }
+  }, 500);
+
+  const handleSearchChange = (query: string) => {
+    search(query);
   };
 
   return (
@@ -52,9 +65,8 @@ const Search: NextComponentType = () => {
       <input
         type='text'
         className='flex-1 w-full px-2 py-1 text-lg text-white bg-transparent border rounded-md outline-none border-sw-yellow ring-1 ring-transparent hover:ring-sw-yellow focus:ring-sw-yellow'
-        value={searchQuery}
         onChange={(event) =>
-          handleSearchChange(event.target as HTMLInputElement)
+          handleSearchChange((event.target as HTMLInputElement).value)
         }
       />
       {searchLoad && (
@@ -62,12 +74,6 @@ const Search: NextComponentType = () => {
           <Image src={loadGif} alt='load-animation' className='h-auto w-36' />
         </div>
       )}
-      <button
-        className='w-full mt-2 text-black rounded-md bg-sw-yellow'
-        onClick={search}
-      >
-        Search
-      </button>
     </div>
   );
 };
