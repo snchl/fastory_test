@@ -36,7 +36,7 @@ const Starship: NextPage<Props> = ({ starship }) => {
               </td>
             </tr>
             <tr>
-              <th className='border border-sw-yellow'>Cost (galactic credits)</th>
+              <th className='border border-sw-yellow'>Cost (Galactic Credits)</th>
               <td className='border border-sw-yellow'>
                 {starship.properties.cost_in_credits}
               </td>
@@ -80,7 +80,7 @@ const Starship: NextPage<Props> = ({ starship }) => {
             <tr>
               <th className='border border-sw-yellow'>Cargo capacity</th>
               <td className='border border-sw-yellow'>
-                {starship.properties.cargo_capacity} km
+                {starship.properties.cargo_capacity} kg
               </td>
             </tr>
             <tr>
