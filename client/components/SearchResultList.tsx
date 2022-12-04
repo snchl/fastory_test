@@ -1,11 +1,14 @@
 import Link from 'next/link';
-import { useSelector } from 'react-redux';
-import { selectFilmsState } from '../store/filmSlice';
-import { selectPeoplesState } from '../store/peopleSlice';
-import { selectPlanetsState } from '../store/planetSlice';
-import { selectSpeciesState } from '../store/specySlice';
-import { selectStarshipsState } from '../store/starshipSlice';
-import { selectVehiclesState } from '../store/vehicleSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectFilmsState, setFilmsState } from '../store/filmSlice';
+import { selectPeoplesState, setPeoplesState } from '../store/peopleSlice';
+import { selectPlanetsState, setPlanetsState } from '../store/planetSlice';
+import { selectSpeciesState, setSpeciesState } from '../store/specySlice';
+import {
+  selectStarshipsState,
+  setStarshipsState,
+} from '../store/starshipSlice';
+import { selectVehiclesState, setVehiclesState } from '../store/vehicleSlice';
 
 const SearchResultList = () => {
   const films = useSelector(selectFilmsState);
@@ -14,6 +17,8 @@ const SearchResultList = () => {
   const species = useSelector(selectSpeciesState);
   const starships = useSelector(selectStarshipsState);
   const vehicles = useSelector(selectVehiclesState);
+
+  const dispatch = useDispatch();
 
   const haveResult = () => {
     return (
@@ -26,9 +31,23 @@ const SearchResultList = () => {
     );
   };
 
+  const resetResults = () => {
+    dispatch(setFilmsState([]));
+    dispatch(setPeoplesState([]));
+    dispatch(setPlanetsState([]));
+    dispatch(setSpeciesState([]));
+    dispatch(setStarshipsState([]));
+    dispatch(setVehiclesState([]));
+  };
+
   return (
     <div className='space-y-4'>
-      {haveResult() && <h2 className='text-2xl font-medium'>Search results</h2>}
+      {haveResult() && (
+        <div className='flex items-center justify-between'>
+          <h2 className='text-2xl font-medium'>Search results</h2>
+          <button className='px-2 py-0.5 text-black rounded-md bg-sw-yellow' onClick={resetResults}>Reset</button>
+        </div>
+      )}
       {films.length > 0 && (
         <details>
           <summary className='text-xl font-medium border-b'>
