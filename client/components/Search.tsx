@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { NextComponentType } from 'next';
+import Image from 'next/image';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFilmsState } from '../store/filmSlice';
-import { selectPeoplesState, setPeoplesState } from '../store/peopleSlice';
+import { setPeoplesState } from '../store/peopleSlice';
 import { setPlanetsState } from '../store/planetSlice';
 import {
   selectSearchLoadState,
@@ -12,6 +13,7 @@ import {
 import { setSpeciesState } from '../store/specySlice';
 import { setStarshipsState } from '../store/starshipSlice';
 import { setVehiclesState } from '../store/vehicleSlice';
+import loadGif from '../assets/images/load.gif';
 
 const Search: NextComponentType = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -55,6 +57,11 @@ const Search: NextComponentType = () => {
           handleSearchChange(event.target as HTMLInputElement)
         }
       />
+      {searchLoad && (
+        <div className='flex justify-center'>
+          <Image src={loadGif} alt='load-animation' className='h-auto w-36' />
+        </div>
+      )}
       <button
         className='w-full mt-2 text-black rounded-md bg-sw-yellow'
         onClick={search}
