@@ -7,8 +7,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.send('Bad request: accept only GET method');
   }
 
-  return await axios('http://localhost:4000/search', {
-    params: req.query,
+  return await axios(`http://localhost:4000/search/${req.query.type || ''}`, {
+    params: {
+      id: req.query.id,
+      search: req.query.search,
+      format: req.query.format,
+    },
     headers: {
       'Accept-Encoding': 'application/json',
     }
@@ -17,6 +21,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.json(response.data);
     })
     .catch((error) => {
+      console.log('Error');
+      console.log(error); // TODO
       throw error;
     });
 };
