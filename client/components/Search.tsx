@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { NextComponentType } from 'next';
 import Image from 'next/image';
-import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFilmsState } from '../store/filmSlice';
 import { setPeoplesState } from '../store/peopleSlice';
@@ -16,8 +15,6 @@ import { setVehiclesState } from '../store/vehicleSlice';
 import loadGif from '../assets/images/load.gif';
 
 const Search: NextComponentType = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-
   const searchLoad = useSelector(selectSearchLoadState);
   const dispatch = useDispatch();
 
