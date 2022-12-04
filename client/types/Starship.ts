@@ -22,6 +22,7 @@ type StarshipProperties = {
 };
 
 type Starship = {
+  name?: string;
   properties: StarshipProperties;
 } & GenericModel;
 

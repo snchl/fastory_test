@@ -19,6 +19,7 @@ type SpecyProperties = {
 };
 
 type Specy = {
+  name?: string;
   properties: SpecyProperties;
 } & GenericModel;
 

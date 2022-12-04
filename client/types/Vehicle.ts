@@ -20,6 +20,7 @@ type VehicleProperties = {
 };
 
 type Vehicle = {
+  name?: string;
   properties: VehicleProperties;
 } & GenericModel;
 

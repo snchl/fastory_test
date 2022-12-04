@@ -18,6 +18,7 @@ type PlanetProperties = {
 };
 
 type Planet = {
+  name?: string;
   properties: PlanetProperties;
 } & GenericModel;
 

@@ -5,38 +5,44 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setFilmsState } from '../store/filmSlice';
 import { selectPeoplesState, setPeoplesState } from '../store/peopleSlice';
 import { setPlanetsState } from '../store/planetSlice';
+import {
+  selectSearchLoadState,
+  setSearchLoadState,
+} from '../store/searchSlice';
 import { setSpeciesState } from '../store/specySlice';
 import { setStarshipsState } from '../store/starshipSlice';
 import { setVehiclesState } from '../store/vehicleSlice';
 
 const Search: NextComponentType = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchLoad, setSearchLoad] = useState(false);
 
+  const searchLoad = useSelector(selectSearchLoadState);
   const dispatch = useDispatch();
 
   const handleSearchChange = (target: HTMLInputElement) => {
     setSearchQuery(target.value);
   };
   const search = async () => {
-    setSearchLoad(true);
-    await axios('/api/swapi', {
-      params: {
-        search: searchQuery,
-      },
-    })
-      .then((response) => {
-        dispatch(setFilmsState(response.data.films));
-        dispatch(setPeoplesState(response.data.people));
-        dispatch(setPlanetsState(response.data.planets));
-        dispatch(setSpeciesState(response.data.species));
-        dispatch(setStarshipsState(response.data.starships));
-        dispatch(setVehiclesState(response.data.vehicles));
+    if (!searchLoad && searchQuery) {
+      dispatch(setSearchLoadState(true));
+      await axios('/api/swapi', {
+        params: {
+          search: searchQuery,
+        },
       })
-      .catch((error) => {
-        console.log(error);
-      });
-    setSearchLoad(false);
+        .then((response) => {
+          dispatch(setFilmsState(response.data.films));
+          dispatch(setPeoplesState(response.data.people));
+          dispatch(setPlanetsState(response.data.planets));
+          dispatch(setSpeciesState(response.data.species));
+          dispatch(setStarshipsState(response.data.starships));
+          dispatch(setVehiclesState(response.data.vehicles));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      dispatch(setSearchLoadState(false));
+    }
   };
 
   return (

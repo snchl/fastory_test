@@ -20,6 +20,7 @@ type PeopleProperties = {
 };
 
 type People = {
+  name?: string;
   properties: PeopleProperties;
 } & GenericModel;
 
