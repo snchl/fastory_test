@@ -66,6 +66,7 @@ const People: NextPage<Props> = ({ people }) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { uid } = context.query;
+  let error: boolean = false;
 
   const people: People = await axios('http://localhost:3000/api/swapi', {
     params: {
@@ -77,15 +78,24 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   })
     .then((response) => response.data)
-    .catch((error) => {
-      throw error;
+    .catch(() => {
+      error = true;
     });
 
-  return {
-    props: {
-      people: people,
-    },
-  };
+  if (error) {
+    return {
+      redirect: {
+        destination: `/not-found?type=people&id=${uid}`,
+        permanent: false,
+      },
+    };
+  } else {
+    return {
+      props: {
+        people: people,
+      },
+    };
+  }
 };
 
 export default People;

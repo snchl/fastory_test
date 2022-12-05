@@ -74,6 +74,7 @@ const Planet: NextPage<Props> = ({ planet }) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { uid } = context.query;
+  let error: boolean = false;
 
   const planet: Planet = await axios('http://localhost:3000/api/swapi', {
     params: {
@@ -85,15 +86,24 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   })
     .then((response) => response.data)
-    .catch((error) => {
-      throw error;
+    .catch(() => {
+      error = true;
     });
 
-  return {
-    props: {
-      planet: planet,
-    },
-  };
+  if (error) {
+    return {
+      redirect: {
+        destination: `/not-found?type=planet&id=${uid}`,
+        permanent: false,
+      },
+    };
+  } else {
+    return {
+      props: {
+        planet: planet,
+      },
+    };
+  }
 };
 
 export default Planet;

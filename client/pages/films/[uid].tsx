@@ -1,7 +1,6 @@
 import axios from 'axios';
-import { link } from 'fs';
 import { GetServerSideProps, NextPage } from 'next';
-import Link from 'next/link';
+import Router from 'next/router';
 import Film from '../../types/Film';
 
 type Props = {
@@ -41,6 +40,7 @@ const Film: NextPage<Props> = ({ film }) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { uid } = context.query;
+  let error: boolean = false;
 
   const film: Film = await axios('http://localhost:3000/api/swapi', {
     params: {
@@ -52,15 +52,24 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   })
     .then((response) => response.data)
-    .catch((error) => {
-      throw error;
+    .catch(() => {
+      error = true;
     });
 
-  return {
-    props: {
-      film: film,
-    },
-  };
+  if (error) {
+    return {
+      redirect: {
+        destination: `/not-found?type=film&id=${uid}`,
+        permanent: false,
+      },
+    };
+  } else {
+    return {
+      props: {
+        film: film,
+      },
+    };
+  }
 };
 
 export default Film;

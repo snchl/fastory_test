@@ -36,7 +36,9 @@ const Starship: NextPage<Props> = ({ starship }) => {
               </td>
             </tr>
             <tr>
-              <th className='border border-sw-yellow'>Cost (Galactic Credits)</th>
+              <th className='border border-sw-yellow'>
+                Cost (Galactic Credits)
+              </th>
               <td className='border border-sw-yellow'>
                 {starship.properties.cost_in_credits}
               </td>
@@ -60,7 +62,9 @@ const Starship: NextPage<Props> = ({ starship }) => {
               </td>
             </tr>
             <tr>
-              <th className='border border-sw-yellow'>Max atmosphering speed</th>
+              <th className='border border-sw-yellow'>
+                Max atmosphering speed
+              </th>
               <td className='border border-sw-yellow'>
                 {starship.properties.max_atmosphering_speed}
               </td>
@@ -72,7 +76,9 @@ const Starship: NextPage<Props> = ({ starship }) => {
               </td>
             </tr>
             <tr>
-              <th className='border border-sw-yellow'>Maximum number of Megalights (MGLT)</th>
+              <th className='border border-sw-yellow'>
+                Maximum number of Megalights (MGLT)
+              </th>
               <td className='border border-sw-yellow'>
                 {starship.properties.MGLT}
               </td>
@@ -84,7 +90,9 @@ const Starship: NextPage<Props> = ({ starship }) => {
               </td>
             </tr>
             <tr>
-              <th className='border border-sw-yellow'>Consumable capacity without resupply (for entire crew)</th>
+              <th className='border border-sw-yellow'>
+                Consumable capacity without resupply (for entire crew)
+              </th>
               <td className='border border-sw-yellow'>
                 {starship.properties.consumables}
               </td>
@@ -98,6 +106,7 @@ const Starship: NextPage<Props> = ({ starship }) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { uid } = context.query;
+  let error: boolean = false;
 
   const starship: Starship = await axios('http://localhost:3000/api/swapi', {
     params: {
@@ -109,13 +118,24 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   })
     .then((response) => response.data)
-    .catch((error) => null);
+    .catch(() => {
+      error = true;
+    });
 
-  return {
-    props: {
-      starship: starship,
-    },
-  };
+  if (error) {
+    return {
+      redirect: {
+        destination: `/not-found?type=starship&id=${uid}`,
+        permanent: false,
+      },
+    };
+  } else {
+    return {
+      props: {
+        starship: starship,
+      },
+    };
+  }
 };
 
 export default Starship;

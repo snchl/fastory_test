@@ -99,6 +99,7 @@ const Specy: NextPage<Props> = ({ specy }) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { uid } = context.query;
+  let error: boolean = false;
 
   const specy: Specy = await axios('http://localhost:3000/api/swapi', {
     params: {
@@ -110,13 +111,24 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   })
     .then((response) => response.data)
-    .catch((error) => null);
+    .catch(() => {
+      error = true;
+    });
 
-  return {
-    props: {
-      specy: specy,
-    },
-  };
+  if (error) {
+    return {
+      redirect: {
+        destination: `/not-found?type=specy&id=${uid}`,
+        permanent: false,
+      },
+    };
+  } else {
+    return {
+      props: {
+        specy: specy,
+      },
+    };
+  }
 };
 
 export default Specy;
