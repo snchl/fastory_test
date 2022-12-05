@@ -15,8 +15,17 @@ import { setVehiclesState } from '../store/vehicleSlice';
 import loadGif from '../assets/images/load.gif';
 import { capitalizeString } from '../utils/format';
 import { useEffect, useState } from 'react';
+import DataType from '../types/DataType';
+import { useRouter } from 'next/router';
+
+type Query = {
+  query?: string;
+  type?: DataType;
+};
 
 const Search: NextComponentType = () => {
+  const router = useRouter();
+
   const filterOptions = [
     'all',
     'people',
@@ -110,6 +119,16 @@ const Search: NextComponentType = () => {
     search(searchQuery);
   }, [filter]);
 
+  useEffect(() => {
+    const { query, type } = router.query as Query;
+    if (type) {
+      setFilter(type);
+    }
+    if (query) {
+      setSearchQuery(query);
+    }
+  }, [router.isReady]);
+
   return (
     <>
       <div className='flex items-center gap-x-2'>
@@ -133,7 +152,12 @@ const Search: NextComponentType = () => {
       </div>
       {searchLoad && (
         <div className='flex justify-center'>
-          <Image src={loadGif} alt='load-animation' className='h-auto w-36' />
+          <Image
+            priority
+            src={loadGif}
+            alt='load-animation'
+            className='h-auto w-36'
+          />
         </div>
       )}
     </>

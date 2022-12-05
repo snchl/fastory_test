@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { GetServerSideProps, NextPage } from 'next';
-import Router from 'next/router';
 import Film from '../../types/Film';
 
 type Props = {
