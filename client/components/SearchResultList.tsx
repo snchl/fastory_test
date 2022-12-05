@@ -50,7 +50,7 @@ const SearchResultList = () => {
       )}
       {films.length > 0 && (
         <details>
-          <summary className='text-xl font-medium border-b'>
+          <summary className='text-xl font-medium border-b cursor-pointer'>
             Films ({films.length})
           </summary>
           <ul className='py-2 pl-6 space-y-2 list-disc'>
@@ -68,7 +68,7 @@ const SearchResultList = () => {
       )}
       {peoples.length > 0 && (
         <details>
-          <summary className='text-xl font-medium border-b'>
+          <summary className='text-xl font-medium border-b cursor-pointer'>
             Peoples ({peoples.length})
           </summary>
           <ul className='py-2 pl-6 space-y-2 list-disc'>
@@ -86,7 +86,7 @@ const SearchResultList = () => {
       )}
       {planets.length > 0 && (
         <details>
-          <summary className='text-xl font-medium border-b'>
+          <summary className='text-xl font-medium border-b cursor-pointer'>
             Planets ({planets.length})
           </summary>
           <ul className='py-2 pl-6 space-y-2 list-disc'>
@@ -104,7 +104,7 @@ const SearchResultList = () => {
       )}
       {starships.length > 0 && (
         <details>
-          <summary className='text-xl font-medium border-b'>
+          <summary className='text-xl font-medium border-b cursor-pointer'>
             Starships ({starships.length})
           </summary>
           <ul className='py-2 pl-6 space-y-2 list-disc'>
@@ -122,7 +122,7 @@ const SearchResultList = () => {
       )}
       {species.length > 0 && (
         <details>
-          <summary className='text-xl font-medium border-b'>
+          <summary className='text-xl font-medium border-b cursor-pointer'>
             Species ({species.length})
           </summary>
           <ul className='py-2 pl-6 space-y-2 list-disc'>
@@ -140,7 +140,7 @@ const SearchResultList = () => {
       )}
       {vehicles.length > 0 && (
         <details>
-          <summary className='text-xl font-medium border-b'>
+          <summary className='text-xl font-medium border-b cursor-pointer'>
             Vehicles ({vehicles.length})
           </summary>
           <ul className='py-2 pl-6 space-y-2 list-disc'>
