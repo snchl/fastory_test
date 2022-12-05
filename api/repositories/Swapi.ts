@@ -22,7 +22,7 @@ export default {
     const swapiRequests: SwapiRequest | SwapiRequest[] = type
       ? {
           dataType: type,
-          query: request.params.query
+          query: request.query.search
             ? type === 'people' || type === 'species' || type === 'planets'
               ? `?name=${request.query.search}`
               : type === 'starships' || type === 'vehicles'
