@@ -1,4 +1,5 @@
 import Hapi from '@hapi/hapi';
+import { AxiosError } from 'axios';
 import DataType from '../types/DataType';
 import swapi, { SwapiRequest } from '../utils/swapi';
 
@@ -22,7 +23,7 @@ export default {
     const swapiRequests: SwapiRequest | SwapiRequest[] = type
       ? {
           dataType: type,
-          query: request.params.query
+          query: request.query.search
             ? type === 'people' || type === 'species' || type === 'planets'
               ? `?name=${request.query.search}`
               : type === 'starships' || type === 'vehicles'
@@ -78,13 +79,19 @@ export default {
             return mappedResponse;
           })
           .catch((error) => {
-            // TODO
+            throw error;
           })
       : await swapi
           .fetchUrl(swapiRequests)
           .then((data) => (data[type] ? data[type] : data))
-          .catch((error) => {
-            // TODO
+          .catch((error: AxiosError) => {
+            const errorJSON: any = error.toJSON();
+            if (errorJSON['status'] === 404) {
+              const response = h.response('Not found').code(404);
+              return response;
+            } else {
+              throw error;
+            }
           });
 
     return response;

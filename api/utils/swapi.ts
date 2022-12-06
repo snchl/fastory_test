@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import DataType from '../types/DataType';
 import config from '../config';
 
@@ -27,7 +27,7 @@ export default {
             response.data.results || response.data.result || [],
         };
       })
-      .catch((error) => {
+      .catch((error: AxiosError) => {
         throw error;
       });
   },

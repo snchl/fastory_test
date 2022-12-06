@@ -2,7 +2,8 @@
   "name": "fastory-test",
   "main": "lib/index.js",
   "scripts": {
-    "dev:api": "concurrently \"npx tsc --watch\" \"nodemon -q ./lib/index.js\""
+    "dev:api": "concurrently \"npx tsc --watch\" \"nodemon -q ./lib/index.js\"",
+    "dev:client": "yarn --cwd ./client dev"
   },
   "dependencies": {
     "@hapi/hapi": "^21.1.0",
