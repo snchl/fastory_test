@@ -3,6 +3,7 @@
 Voici le résultat de mon travail pour le test de recrutement https://github.com/KrashStudio/react-exercice.
 
 J’ai réaliser l’API avec le framework [HAPI](https://hapi.dev/) et l’application front-end avec le framework [Next.js](https://nextjs.org/).
+[Swapi.dev](https://swapi.dev/) étant DOWN durant tout le week-end (404 sur l'ensemble du domaine), je me suis rabattue sur [Swapi.tech](https://swapi.tech/) après confirmation de votre part.
 
 Ayant malheureusement des obligations m’empêchant de consacrer plus de temps au test, je n’ai pu mettre en place les fonctionnalités suivantes :
 
